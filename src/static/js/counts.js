@@ -9,17 +9,22 @@ $(function(){
 	var Count = Backbone.Model.extend({
 		localStorage: new Backbone.LocalStorage("counts-hack"),
 		defaults: function() {
-	      return {
-	        count: 0
-	      };
+			return {
+	        	count: 0
+	    	}
 	    },
 		initialize: function() {
-			this.count = 0;
+			this.save({count: 0})
 			this.username = "abc";
 		},
 		incrementCount: function () {
-			this.save({count: this.count + 1});
-			console.log("incrementing count to " + this.count);
+			console.log("Current count is " + this.get('count'));
+			this.save({count: this.get('count') + 1});
+			console.log("Incrementing count to " + this.get('count'));
+		},
+		decrementCount: function () {
+			this.save({count: this.get('count') - 1});
+			console.log("Decrementing count to " + this.get('count'));
 		}
 	});
 
@@ -31,24 +36,34 @@ $(function(){
 		initialize: function(countModel) {
 			this.model = countModel
 			this.listenTo(this.model, "change", this.render);
-			this.render();
 		},
 		template: _.template($("#count-template").html()),
+		events: {
+			"click .count-increment button": "incrementCount",
+			"click .count-decrement button": "decrementCount"
+		},
 		render: function() {
-			console.log("Whooo yeah " + this.model.count);
-			var toRender = _.extend({username: "abc"}, this.model.attributes);
+			console.log('Rendering ' + this.model.get('count'));
+			console.log(this.model.attributes)
+			var toRender = _.extend({username: 'abc'}, this.model.attributes);
 			this.$el.html(this.template(toRender));
 			return this;
 		},
-		// events: {
-	 //      "click count-increment"   : "incrementCount",
-	 //    },
+		incrementCount: function () {
+			this.model.incrementCount();
+		},
+		decrementCount: function () {
+			this.model.decrementCount();
+		}
 	});
 	// TODO start off with single count model.
+	// TODO hook up events.
 	// Show the UI first.
-	var newCount = new Count;
+	var newCount = new Count({id: 1});
+	newCount.fetch();
+
+
 	//var newUser = new User(newCount);
 	var countView = new CountView(newCount);
-	newCount.incrementCount();
 	$('#counts-start').append(countView.render().el)
 })
