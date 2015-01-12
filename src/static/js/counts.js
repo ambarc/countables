@@ -13,9 +13,10 @@ $(function(){
 	        	count: 0
 	    	}
 	    },
-		initialize: function() {
+		initialize: function(localStorage) {
 			this.save({count: 0})
 			this.username = "abc";
+			this.localStorage = localStorage;
 		},
 		incrementCount: function () {
 			console.log("Current count is " + this.get('count'));
@@ -25,11 +26,12 @@ $(function(){
 		decrementCount: function () {
 			this.save({count: this.get('count') - 1});
 			console.log("Decrementing count to " + this.get('count'));
-		}
+		},
 	});
 
 	var Counts = Backbone.Collection.extend({
-		model: Count
+		model: Count,
+		//localStorage: new Backbone.LocalStorage("counts-hack")
 	});
 
 	var CountView = Backbone.View.extend({
@@ -60,7 +62,12 @@ $(function(){
 	// TODO hook up events.
 	// Show the UI first.
 	var newCount = new Count({id: 1});
-	newCount.fetch();
+	// newCount.fetch();
+	//var allCounts = new Counts;
+	//allCounts.fetch();
+	if (allCounts.length == 0) {
+		allCounts.push(newCount);
+	}
 
 
 	//var newUser = new User(newCount);
