@@ -58,16 +58,31 @@ $(function(){
 			this.model.decrementCount();
 		}
 	});
-	// TODO start off with single count model.
-	// TODO hook up events.
+
+	var AppView = Backbone.View.extend({
+		el: $("#app-container"),
+		initialize: function() {
+			this.allCounts = new Counts;
+		},
+		events: {
+			"click #add-count button": "addCount"
+		},
+		addCount: function() {
+			console.log("adding count.")
+		}
+	});
+	// TODO make an appview that encapuslates the app.
+	// TODO make the counts add-able.
 	// Show the UI first.
+	var appView = new AppView;
 	var newCount = new Count({id: 1});
+	//var allCounts = new Counts;
 	// newCount.fetch();
 	//var allCounts = new Counts;
 	//allCounts.fetch();
-	if (allCounts.length == 0) {
-		allCounts.push(newCount);
-	}
+	// if (allCounts.length == 0) {
+	// 	allCounts.push(newCount);
+	// }
 
 
 	//var newUser = new User(newCount);
