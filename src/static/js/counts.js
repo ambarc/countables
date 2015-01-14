@@ -10,13 +10,13 @@ $(function(){
 		localStorage: new Backbone.LocalStorage("counts-hack"),
 		defaults: function() {
 			return {
-	        	count: 0
+	        	count: 0,
+	        	title: "abc"
 	    	}
 	    },
-		initialize: function(localStorage) {
-			this.save({count: 0})
-			this.username = "abc";
-			this.localStorage = localStorage;
+		initialize: function(options) {
+			console.log(options);
+			this.save({count: 0, title: options.title});
 		},
 		incrementCount: function () {
 			console.log("Current count is " + this.get('count'));
@@ -47,8 +47,8 @@ $(function(){
 		render: function() {
 			console.log('Rendering ' + this.model.get('count'));
 			console.log(this.model.attributes)
-			var toRender = _.extend({username: 'abc'}, this.model.attributes);
-			this.$el.html(this.template(toRender));
+			var toRender = _.extend({title: 'abc2'}, this.model.attributes);
+			this.$el.html(this.template(this.model.attributes));
 			return this;
 		},
 		incrementCount: function () {
@@ -68,6 +68,11 @@ $(function(){
 			"click #add-count button": "addCount"
 		},
 		addCount: function() {
+
+			var newCount = new Count({title: $("#count-title").val()});
+			var countView = new CountView(newCount);
+			// Put this shit in an li. 
+			$('#counts-list').append($('<li>').append(countView.render().el))
 			console.log("adding count.")
 		}
 	});
@@ -75,17 +80,4 @@ $(function(){
 	// TODO make the counts add-able.
 	// Show the UI first.
 	var appView = new AppView;
-	var newCount = new Count({id: 1});
-	//var allCounts = new Counts;
-	// newCount.fetch();
-	//var allCounts = new Counts;
-	//allCounts.fetch();
-	// if (allCounts.length == 0) {
-	// 	allCounts.push(newCount);
-	// }
-
-
-	//var newUser = new User(newCount);
-	var countView = new CountView(newCount);
-	$('#counts-start').append(countView.render().el)
 })
