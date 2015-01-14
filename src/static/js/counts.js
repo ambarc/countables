@@ -9,46 +9,75 @@ $(function(){
 	var Count = Backbone.Model.extend({
 		localStorage: new Backbone.LocalStorage("counts-hack"),
 		defaults: function() {
-	      return {
-	        count: 0
-	      };
+			return {
+	        	count: 0,
+	        	title: "abc"
+	    	}
 	    },
-		initialize: function() {
-			this.count = 0;
-			this.username = "abc";
+		initialize: function(options) {
+			console.log(options);
+			this.save({count: 0, title: options.title});
 		},
 		incrementCount: function () {
-			this.save({count: this.count + 1});
-			console.log("incrementing count to " + this.count);
-		}
+			console.log("Current count is " + this.get('count'));
+			this.save({count: this.get('count') + 1});
+			console.log("Incrementing count to " + this.get('count'));
+		},
+		decrementCount: function () {
+			this.save({count: this.get('count') - 1});
+			console.log("Decrementing count to " + this.get('count'));
+		},
 	});
 
 	var Counts = Backbone.Collection.extend({
-		model: Count
+		model: Count,
+		//localStorage: new Backbone.LocalStorage("counts-hack")
 	});
 
 	var CountView = Backbone.View.extend({
 		initialize: function(countModel) {
 			this.model = countModel
 			this.listenTo(this.model, "change", this.render);
-			this.render();
 		},
 		template: _.template($("#count-template").html()),
+		events: {
+			"click .count-increment button": "incrementCount",
+			"click .count-decrement button": "decrementCount"
+		},
 		render: function() {
-			console.log("Whooo yeah " + this.model.count);
-			var toRender = _.extend({username: "abc"}, this.model.attributes);
-			this.$el.html(this.template(toRender));
+			console.log('Rendering ' + this.model.get('count'));
+			console.log(this.model.attributes)
+			var toRender = _.extend({title: 'abc2'}, this.model.attributes);
+			this.$el.html(this.template(this.model.attributes));
 			return this;
 		},
-		// events: {
-	 //      "click count-increment"   : "incrementCount",
-	 //    },
+		incrementCount: function () {
+			this.model.incrementCount();
+		},
+		decrementCount: function () {
+			this.model.decrementCount();
+		}
 	});
-	// TODO start off with single count model.
+
+	var AppView = Backbone.View.extend({
+		el: $("#app-container"),
+		initialize: function() {
+			this.allCounts = new Counts;
+		},
+		events: {
+			"click #add-count button": "addCount"
+		},
+		addCount: function() {
+
+			var newCount = new Count({title: $("#count-title").val()});
+			var countView = new CountView(newCount);
+			// Put this shit in an li. 
+			$('#counts-list').append($('<li>').append(countView.render().el))
+			console.log("adding count.")
+		}
+	});
+	// TODO make an appview that encapuslates the app.
+	// TODO make the counts add-able.
 	// Show the UI first.
-	var newCount = new Count;
-	//var newUser = new User(newCount);
-	var countView = new CountView(newCount);
-	newCount.incrementCount();
-	$('#counts-start').append(countView.render().el)
+	var appView = new AppView;
 })

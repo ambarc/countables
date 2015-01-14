@@ -4,15 +4,24 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/json2/20110223/json2.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js"></script>
-    <script type="text/javascript" src="js/counts.js "></script>
     <script type="text/javascript" src="js/backbone.localStorage-min.js "></script>
+    <script type="text/javascript" src="js/counts.js "></script>
+    <link rel="stylesheet" type="text/css" href="css/index.css"></link>
   </head>
   <body>
     <div>Hello User. Welcome to countable.</div>
-    <div>
-    	<div id="counts-start">
-    	</div>
-    	<!-- 	-->
+    <div id="app-container">
+      <div id="add-count">
+        <button>Add Count</button>
+        <input id="count-title"></input>
+      </div>
+      <div>
+      	<div id="counts-list-container">
+          <div id="counts-list">
+          </div>
+      	</div>
+      	<!-- 	-->
+      </div>
     </div>
 
     <!-- templates -->
@@ -25,7 +34,7 @@
 	      <div class="count-decrement">
 	      	<button>-</button>
 	      </div>
-	      <label><%- username %></label>
+	      <label><%- title %></label>
 	    </div>
     </script>
   </body>
