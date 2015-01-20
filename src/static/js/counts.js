@@ -7,7 +7,7 @@ $(function(){
 	});*/
 
 	var Count = Backbone.Model.extend({
-		localStorage: new Backbone.LocalStorage("counts-hack"),
+		//localStorage: new Backbone.LocalStorage("counts-hack"),
 		defaults: function() {
 			return {
 	        	count: 0,
@@ -15,7 +15,6 @@ $(function(){
 	    	}
 	    },
 		initialize: function(options) {
-			console.log(options);
 			this.save({count: 0, title: options.title});
 		},
 		incrementCount: function () {
@@ -31,13 +30,14 @@ $(function(){
 
 	var Counts = Backbone.Collection.extend({
 		model: Count,
-		//localStorage: new Backbone.LocalStorage("counts-hack")
+		localStorage: new Backbone.LocalStorage("counts-hack")
 	});
 
 	var CountView = Backbone.View.extend({
 		initialize: function(countModel) {
 			this.model = countModel
 			this.listenTo(this.model, "change", this.render);
+			this.listenTo(this.model, "destroy", this.remove);
 		},
 		template: _.template($("#count-template").html()),
 		events: {
@@ -45,8 +45,6 @@ $(function(){
 			"click .count-decrement button": "decrementCount"
 		},
 		render: function() {
-			console.log('Rendering ' + this.model.get('count'));
-			console.log(this.model.attributes)
 			var toRender = _.extend({title: 'abc2'}, this.model.attributes);
 			this.$el.html(this.template(this.model.attributes));
 			return this;
@@ -63,18 +61,30 @@ $(function(){
 		el: $("#app-container"),
 		initialize: function() {
 			this.allCounts = new Counts;
+			this.listenTo(this.allCounts, 'add', this.addCount);
+			this.listenTo(this.allCounts, 'all', this.render);
+			this.listenTo(this.allCounts, 'reset', this.render);
+			this.allCounts.fetch();
 		},
 		events: {
-			"click #add-count button": "addCount"
+			"click #add-count button": "createCount",
+			"click #clear-all button": "clearAll"
 		},
-		addCount: function() {
-
-			var newCount = new Count({title: $("#count-title").val()});
+		createCount: function() {
+			this.allCounts.create({title: $("#count-title").val()});
+		},
+		clearAll: function() {
+			while (model = this.allCounts.first()) {
+			  console.log("clearing " + model);
+			  model.destroy();
+			}
+			//this.allCounts.sync();
+		},
+		addCount: function(newCount) {
+			//var newCount = this.allCounts.create({title: $("#count-title").val()});
 			var countView = new CountView(newCount);
-			// Put this shit in an li. 
-			$('#counts-list').append($('<li>').append(countView.render().el))
-			console.log("adding count.")
-		}
+			$('#counts-list').append(countView.render().el)
+		},
 	});
 	// TODO make an appview that encapuslates the app.
 	// TODO make the counts add-able.
