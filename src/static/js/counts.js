@@ -42,7 +42,8 @@ $(function(){
 		template: _.template($("#count-template").html()),
 		events: {
 			"click .count-increment button": "incrementCount",
-			"click .count-decrement button": "decrementCount"
+			"click .count-decrement button": "decrementCount",
+			"click .count-destroy button": "destroyCount"
 		},
 		render: function() {
 			var toRender = _.extend({title: 'abc2'}, this.model.attributes);
@@ -54,6 +55,9 @@ $(function(){
 		},
 		decrementCount: function () {
 			this.model.decrementCount();
+		},
+		destroyCount: function () {
+			this.model.destroy();
 		}
 	});
 
@@ -64,7 +68,7 @@ $(function(){
 			this.listenTo(this.allCounts, 'add', this.addCount);
 			this.listenTo(this.allCounts, 'all', this.render);
 			this.listenTo(this.allCounts, 'reset', this.render);
-			this.allCounts.fetch();
+			console.log(this.allCounts.fetch());
 		},
 		events: {
 			"click #add-count button": "createCount",
