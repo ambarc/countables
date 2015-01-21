@@ -68,7 +68,7 @@ $(function(){
 			this.listenTo(this.allCounts, 'add', this.addCount);
 			this.listenTo(this.allCounts, 'all', this.render);
 			this.listenTo(this.allCounts, 'reset', this.render);
-			this.allCounts.fetch();
+			console.log(this.allCounts.fetch());
 		},
 		events: {
 			"click #add-count button": "createCount",
