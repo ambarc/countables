@@ -1,9 +1,11 @@
 .count-holder {
-	background: lightblue;
 	border: black 2px solid;
 	padding: 10px;
 }
 
 #counts-list {
 	list-style-type: none;
+	ul li {
+		 margin-top: 10px;
+	}
 }
