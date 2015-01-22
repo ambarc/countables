@@ -20,8 +20,8 @@
       </div>
       <div>
       	<div id="counts-list-container">
-          <div id="counts-list">
-          </div>
+          <ul id="counts-list">
+          </ul>
       	</div>
       	<!-- 	-->
       </div>
@@ -29,19 +29,21 @@
 
     <!-- templates -->
     <script type="text/template" id="count-template">
-	    <div class="count-holder">
-	      <div class="count-show"><%- count %></div>
-	      <div class="count-increment">
-	      	<button>+</button>
-	      </div>
-	      <div class="count-decrement">
-	      	<button>-</button>
-	      </div>
-        <div class="count-destroy">
-          <button>x</button>
-        </div>
-	      <label><%- title %></label>
-	    </div>
+    <li>
+  	    <div class="count-holder">
+  	      <div class="count-show"><%- count %></div>
+  	      <div class="count-increment">
+  	      	<button>+</button>
+  	      </div>
+  	      <div class="count-decrement">
+  	      	<button>-</button>
+  	      </div>
+          <div class="count-destroy">
+            <button>x</button>
+          </div>
+  	      <label><%- title %></label>
+  	    </div>
+      </li>
     </script>
   </body>
 </html>

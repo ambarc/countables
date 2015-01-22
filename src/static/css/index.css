@@ -1,5 +1,9 @@
 .count-holder {
-	background: gray;
+	background: lightblue;
 	border: black 2px solid;
-	padding: 2px;
+	padding: 10px;
+}
+
+#counts-list {
+	list-style-type: none;
 }
