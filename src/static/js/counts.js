@@ -14,9 +14,6 @@ $(function(){
 	        	title: "abc"
 	    	}
 	    },
-		initialize: function(options) {
-			this.save({count: 0, title: options.title});
-		},
 		incrementCount: function () {
 			console.log("Current count is " + this.get('count'));
 			this.save({count: this.get('count') + 1});
