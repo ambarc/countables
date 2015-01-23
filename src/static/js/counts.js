@@ -1,11 +1,4 @@
 $(function(){
-	/*
-	var User = Backbone.Model.extend({
-		initialize: function(count) {
-			this.count = count;
-		},
-	});*/
-
 	var Count = Backbone.Model.extend({
 		//localStorage: new Backbone.LocalStorage("counts-hack"),
 		defaults: function() {
@@ -79,7 +72,6 @@ $(function(){
 			  console.log("clearing " + model);
 			  model.destroy();
 			}
-			//this.allCounts.sync();
 		},
 		addCount: function(newCount) {
 			//var newCount = this.allCounts.create({title: $("#count-title").val()});
@@ -91,4 +83,5 @@ $(function(){
 	// TODO make the counts add-able.
 	// Show the UI first.
 	var appView = new AppView;
+	GoodReads.getCount();
 })
